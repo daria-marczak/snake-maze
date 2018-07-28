@@ -73,7 +73,7 @@ function drawFood() {
 
 function drawSlowBonus() {
   ctx.fillStyle = "yellow";
-  ctx.strokeStyle = "darkyellow";
+  ctx.strokeStyle = "darkorange";
   ctx.fillRect(slowBonusX, slowBonusY, 10, 10);
   ctx.strokeRect(slowBonusX, slowBonusY, 10, 10);
 }
@@ -175,7 +175,6 @@ function createFastBonus() {
     const bonusIsOnSnake = part.x === fastBonusX && part.y === fastBonusY;
     if (bonusIsOnSnake) drawFastBonus();
   });
-  console.log("created");
 }
 
 function drawSnake() {

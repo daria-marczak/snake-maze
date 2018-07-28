@@ -44,8 +44,43 @@ h1 {
 }
 
 canvas {
-  position: absolute;
-  top: 50%;
+  /* position: absolute; */
+  /* top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
+}
+
+fieldset {
+  border: none;
+  background: white;
+  color: black;
+  text-align: left;
+  padding: 1.5em;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  padding-top: 0.5em;
+}
+
+.square {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+}
+
+.yellow {
+  background: yellow;
+  border: 1px solid darkorange;
+}
+.green {
+  background: green;
+  border: 1px solid darkgreen;
 }

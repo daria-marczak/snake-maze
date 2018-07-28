@@ -27,13 +27,21 @@ let foodX;
 let foodY;
 let slowBonusX;
 let slowBonusY;
+let fastBonusX;
+let fastBonusY;
 let dx = 10;
 let dy = 0;
 
-main();
-createFood();
-createBonus();
-document.addEventListener("keydown", changeDirection);
+
+startGame();
+
+function startGame() {
+  main();
+  createFood();
+  createSlowBonus();
+  createFastBonus();
+  document.addEventListener("keydown", changeDirection);
+}
 
 function main() {
   gameOver.style.display = "none";
@@ -43,6 +51,7 @@ function main() {
     changingDirection = false;
     clearCanvas();
     drawSlowBonus();
+    drawFastBonus();
     drawFood();
     advanceSnake();
     drawSnake();
@@ -64,10 +73,28 @@ function drawFood() {
 
 function drawSlowBonus() {
   ctx.fillStyle = "yellow";
-  ctx.strokeStyle = "yellow";
+  ctx.strokeStyle = "darkyellow";
   ctx.fillRect(slowBonusX, slowBonusY, 10, 10);
   ctx.strokeRect(slowBonusX, slowBonusY, 10, 10);
 }
+
+function drawFastBonus() {
+  ctx.fillStyle = "green";
+  ctx.strokeStyle = "darkgreen";
+  ctx.fillRect(fastBonusX, fastBonusY, 10, 10);
+  ctx.strokeRect(fastBonusX, fastBonusY, 10, 10);
+}
+
+// function drawBonus(type) {
+//   switch (type) {
+//     case slowBonus:
+//       ctx.fillStyle = "yellow";
+//       ctx.strokeStyle = "darkyellow";
+//       ctx.fillRect(slowBonusX, slowBonusY, 10, 10);
+//       ctx.strokeRect(slowBonusX, slowBonusY, 10, 10);
+//       break;
+//   }
+// }
 
 function advanceSnake() {
   const head = {
@@ -101,10 +128,17 @@ function advanceSnake() {
     snake.pop();
   }
 
-  const didEatBonus = snake[0].x === slowBonusX && snake[0].y === slowBonusY;
-  if (didEatBonus) {
-    createBonus();
+  const didEatSlowBonus = snake[0].x === slowBonusX && snake[0].y === slowBonusY;
+  if (didEatSlowBonus) {
+    createSlowBonus();
     gameSpeed = gameSpeed * 2;
+    setTimeout(function() {gameSpeed = 100}, 5000);
+  };
+
+  const didEatFastBonus = snake[0].x === fastBonusX && snake[0].y === fastBonusY;
+  if (didEatFastBonus) {
+    createFastBonus();
+    gameSpeed = gameSpeed / 2;
     setTimeout(function() {gameSpeed = 100}, 5000);
   };
 }
@@ -123,7 +157,7 @@ function createFood() {
   });
 }
 
-function createBonus() {
+function createSlowBonus() {
   slowBonusX = randomTen(0, width - 10);
   slowBonusY = randomTen(0, height - 10);
 
@@ -131,6 +165,17 @@ function createBonus() {
     const bonusIsOnSnake = part.x === slowBonusX && part.y === slowBonusY;
     if (bonusIsOnSnake) drawSlowBonus();
   });
+}
+
+function createFastBonus() {
+  fastBonusX = randomTen(0, width - 10);
+  fastBonusY = randomTen(0, height - 10);
+
+  snake.forEach(function isBonusOnSnake(part) {
+    const bonusIsOnSnake = part.x === fastBonusX && part.y === fastBonusY;
+    if (bonusIsOnSnake) drawFastBonus();
+  });
+  console.log("created");
 }
 
 function drawSnake() {
@@ -187,7 +232,7 @@ function didGameEnd() {
     
     if (didCollide) {
       gameOver.style.display = "block";
-      gameOver.addEventListener("click", advanceSnake());
+      gameOver.addEventListener("click", startGame());
       return true;
     };
   }

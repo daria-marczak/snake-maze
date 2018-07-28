@@ -29,6 +29,8 @@ let slowBonusX;
 let slowBonusY;
 let fastBonusX;
 let fastBonusY;
+let morePointsBonusX;
+let morePointsBonusY;
 let dx = 10;
 let dy = 0;
 
@@ -40,6 +42,8 @@ function startGame() {
   createFood();
   createSlowBonus();
   createFastBonus();
+  createMorePointsBonus();
+
   document.addEventListener("keydown", changeDirection);
 }
 
@@ -52,6 +56,7 @@ function main() {
     clearCanvas();
     drawSlowBonus();
     drawFastBonus();
+    drawMorePointsBonus();
     drawFood();
     advanceSnake();
     drawSnake();
@@ -95,6 +100,13 @@ function drawFastBonus() {
 //       break;
 //   }
 // }
+
+function drawMorePointsBonus() {
+  ctx.fillStyle = "cornflowerblue";
+  ctx.strokeStyle = "darkcyan";
+  ctx.fillRect(morePointsBonusX, morePointsBonusY, 10, 10);
+  ctx.strokeRect(morePointsBonusX, morePointsBonusY, 10, 10);
+}
 
 function advanceSnake() {
   const head = {
@@ -141,6 +153,14 @@ function advanceSnake() {
     gameSpeed = gameSpeed / 2;
     setTimeout(function() {gameSpeed = 100}, 5000);
   };
+
+  const didEatMorePointsBonus = snake[0].x === morePointsBonusX && snake[0].y === morePointsBonusY;
+  if (didEatMorePointsBonus) {
+    createMorePointsBonus();
+    score += 50;
+    document.querySelector("#score").innerHTML = ` Score: ${score}`;
+
+  };
 }
 
 function randomTen(min, max) {
@@ -174,6 +194,16 @@ function createFastBonus() {
   snake.forEach(function isBonusOnSnake(part) {
     const bonusIsOnSnake = part.x === fastBonusX && part.y === fastBonusY;
     if (bonusIsOnSnake) drawFastBonus();
+  });
+}
+
+function createMorePointsBonus() {
+  morePointsBonusX = randomTen(0, width - 10);
+  morePointsBonusY = randomTen(0, height - 10);
+
+  snake.forEach(function isBonusOnSnake(part) {
+    const bonusIsOnSnake = part.x === morePointsBonusX && part.y === morePointsBonusY;
+    if (bonusIsOnSnake) drawMorePointsBonus();
   });
 }
 
@@ -227,8 +257,8 @@ function changeDirection(event) {
 
 function didGameEnd() {
   for (let i = 4; i < snake.length; i++) {
-    const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y
-    
+    const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
+
     if (didCollide) {
       gameOver.style.display = "block";
       gameOver.addEventListener("click", startGame());

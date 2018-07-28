@@ -40,14 +40,7 @@ h1 {
 }
 
 #over:hover {
-  transform: scale(1.1)
-}
-
-canvas {
-  /* position: absolute; */
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
+  transform: scale(1.1);
 }
 
 fieldset {
@@ -83,4 +76,9 @@ li {
 .green {
   background: green;
   border: 1px solid darkgreen;
+}
+
+.blue {
+  background: cornflowerblue;
+  border: 1px solid darkcyan;
 }

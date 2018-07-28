@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: white;
+  background: linear-gradient(rgb(215, 109, 119), rgb(255, 175, 123));
+  min-height: 100vh;
+  text-align: center;
+}
+
+h1 {
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+}
+
+.score {
+  padding-bottom: 0.5em;
+  display: inline;
+}
+
+#over {
+  padding:  0.5em 0.95em;
+  background: white;
+  border: none;
+  color: rgb(215, 109, 119);
+  cursor: pointer;
+  font-size: 0.95em;
+  border-radius: 15px;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 5px #fff;
+        box-shadow: 0 0 5px #fff;
+  transition: all .2s ease-in-out;
+}
+
+#over:hover {
+  transform: scale(1.1)
+}
+
+canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -20,11 +20,12 @@ h1 {
 }
 
 .score {
-  padding-bottom: 0.5em;
   display: inline;
 }
 
 #over {
+  margin: 0 auto;
+  margin-top: 1.5em;
   padding:  0.5em 0.95em;
   background: white;
   border: none;

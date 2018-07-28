@@ -1,7 +1,7 @@
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
-const gameSpeed = 100;
+let gameSpeed = 100;
 const canvasBackgroundColor = "white";
 const snakeColor = "lightgreen";
 const snakeBorderColor = "darkgreen";
@@ -25,19 +25,24 @@ let score = 0;
 let changingDirection = false;
 let foodX;
 let foodY;
+let slowBonusX;
+let slowBonusY;
 let dx = 10;
 let dy = 0;
 
 main();
 createFood();
+createBonus();
 document.addEventListener("keydown", changeDirection);
 
 function main() {
+  gameOver.style.display = "none";
   if (didGameEnd()) return;
 
   setTimeout(function onTick() {
     changingDirection = false;
     clearCanvas();
+    drawSlowBonus();
     drawFood();
     advanceSnake();
     drawSnake();
@@ -55,6 +60,13 @@ function drawFood() {
   ctx.strokeStyle = foodBorderColor;
   ctx.fillRect(foodX, foodY, 10, 10);
   ctx.strokeRect(foodX, foodY, 10, 10);
+}
+
+function drawSlowBonus() {
+  ctx.fillStyle = "yellow";
+  ctx.strokeStyle = "yellow";
+  ctx.fillRect(slowBonusX, slowBonusY, 10, 10);
+  ctx.strokeRect(slowBonusX, slowBonusY, 10, 10);
 }
 
 function advanceSnake() {
@@ -88,6 +100,13 @@ function advanceSnake() {
   } else {
     snake.pop();
   }
+
+  const didEatBonus = snake[0].x === slowBonusX && snake[0].y === slowBonusY;
+  if (didEatBonus) {
+    createBonus();
+    gameSpeed = gameSpeed * 2;
+    setTimeout(function() {gameSpeed = 100}, 5000);
+  };
 }
 
 function randomTen(min, max) {
@@ -101,6 +120,16 @@ function createFood() {
   snake.forEach(function isFoodOnSnake(part) {
     const foodIsOnSnake = part.x === foodX && part.y === foodY;
     if (foodIsOnSnake) drawFood();
+  });
+}
+
+function createBonus() {
+  slowBonusX = randomTen(0, width - 10);
+  slowBonusY = randomTen(0, height - 10);
+
+  snake.forEach(function isBonusOnSnake(part) {
+    const bonusIsOnSnake = part.x === slowBonusX && part.y === slowBonusY;
+    if (bonusIsOnSnake) drawSlowBonus();
   });
 }
 
@@ -152,15 +181,13 @@ function changeDirection(event) {
   }
 }
 
-function restart() {
-  
-}
-
 function didGameEnd() {
   for (let i = 4; i < snake.length; i++) {
     const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y
+    
     if (didCollide) {
-      // gameOver.style.display === "block";
+      gameOver.style.display = "block";
+      gameOver.addEventListener("click", advanceSnake());
       return true;
     };
   }

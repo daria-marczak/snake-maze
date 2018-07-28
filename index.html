@@ -10,7 +10,7 @@
 	<h1>Snake game</h1>
 	<div id="score">
 	</div>
-	<canvas id="canvas" height="500px" width="500px">Sorry, but your browser does not support HTML5.</canvas>
+	<canvas id="canvas" height="360px" width="360px">Sorry, but your browser does not support HTML5.</canvas>
   <button class="over" id="over">Restart</button>
 
   <fieldset>
@@ -18,19 +18,27 @@
     <ul>
       <li>
         <div class="square yellow"></div>
-        This square slows your snake down for 5 seconds.
+        Slows down for 5 seconds
       </li>
       <li>
         <div class="square green"></div>
-        This square speeds your snake up for 5 seconds.
+        Boots up the speed for 5 seconds
       </li>
       <li>
         <div class="square blue"></div>
-        This square adds +50 points to your score.
+        Adds 50 points to your score
+      </li>
+      <li>
+        <div class="square violet"></div>
+        Removes one part of the snake
+      </li>
+      <li>
+        <div class="square grey"></div>
+        Adds one part of the snake
       </li>
     </ul>
   </fieldset>
-  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+	<script type="text/javascript" src="src/maze.js"></script>  
 	<script type="text/javascript" src="src/script.js"></script>
 </body>
 

@@ -21,16 +21,22 @@ let snake = [
 const width = canvas.width;
 const height = canvas.height;
 
+
 let score = 0;
 let changingDirection = false;
 let foodX;
 let foodY;
+let eatenFood = 0;
 let slowBonusX;
 let slowBonusY;
 let fastBonusX;
 let fastBonusY;
 let morePointsBonusX;
 let morePointsBonusY;
+let shortenBonusX;
+let shortenBonusY;
+let enlargeBonusX;
+let enlargeBonusY;
 let dx = 10;
 let dy = 0;
 
@@ -43,20 +49,23 @@ function startGame() {
   createSlowBonus();
   createFastBonus();
   createMorePointsBonus();
-
+  createShortenBonus();
+  createEnlargenBonus();
   document.addEventListener("keydown", changeDirection);
 }
 
 function main() {
   gameOver.style.display = "none";
   if (didGameEnd()) return;
-
+  createMaze();
   setTimeout(function onTick() {
     changingDirection = false;
     clearCanvas();
-    drawSlowBonus();
-    drawFastBonus();
-    drawMorePointsBonus();
+    if (eatenFood > 5) drawSlowBonus();
+    if (eatenFood > 10) drawFastBonus();
+    if (eatenFood > 25) drawMorePointsBonus();
+    if (eatenFood > 12) drawShortenBonus();
+    if (eatenFood > 15) drawEnlargeBonus();
     drawFood();
     advanceSnake();
     drawSnake();
@@ -108,26 +117,39 @@ function drawMorePointsBonus() {
   ctx.strokeRect(morePointsBonusX, morePointsBonusY, 10, 10);
 }
 
+function drawShortenBonus() {
+  ctx.fillStyle = "violet";
+  ctx.strokeStyle = "darkmagenta";
+  ctx.fillRect(shortenBonusX, shortenBonusY, 10, 10);
+  ctx.strokeRect(shortenBonusX, shortenBonusY, 10, 10);
+}
+
+function drawEnlargeBonus() {
+  ctx.fillStyle = "grey";
+  ctx.strokeStyle = "darkgrey";
+  ctx.fillRect(enlargeBonusX, enlargeBonusY, 10, 10);
+  ctx.strokeRect(enlargeBonusX, enlargeBonusY, 10, 10);
+}
+
 function advanceSnake() {
   const head = {
     x: snake[0].x + dx,
     y: snake[0].y + dy
   };
-
   snake.unshift(head);
 
-  if (head.x > 500) {
+  if (head.x > 360) {
     head.x = 0;
   }
 
   if (head.x < 0) {
-    head.x = 500;
+    head.x = 360;
   }
 
   if (head.y < 0) {
-    head.y = 500;
+    head.y = 360;
   }
-  if (head.y > 500) {
+  if (head.y > 360) {
     head.y = 0;
   }
 
@@ -136,6 +158,8 @@ function advanceSnake() {
     score += 10;
     document.querySelector("#score").innerHTML = ` Score: ${score}`;
     createFood();
+    eatenFood ++;
+    console.log(eatenFood);
   } else {
     snake.pop();
   }
@@ -159,8 +183,19 @@ function advanceSnake() {
     createMorePointsBonus();
     score += 50;
     document.querySelector("#score").innerHTML = ` Score: ${score}`;
-
   };
+
+  const didEatShortenBonus = snake[0].x === shortenBonusX && snake[0].y === shortenBonusY;
+  if (didEatShortenBonus) {
+    createShortenBonus();
+    snake.pop();
+  }
+
+  const didEatEnlargenBonus = snake[0].x === enlargeBonusX && snake[0].y === enlargeBonusY;
+  if (didEatEnlargenBonus) {
+    createEnlargenBonus();
+  snake.unshift(head);
+  }
 }
 
 function randomTen(min, max) {
@@ -204,6 +239,26 @@ function createMorePointsBonus() {
   snake.forEach(function isBonusOnSnake(part) {
     const bonusIsOnSnake = part.x === morePointsBonusX && part.y === morePointsBonusY;
     if (bonusIsOnSnake) drawMorePointsBonus();
+  });
+}
+
+function createShortenBonus() {
+  shortenBonusX = randomTen(0, width - 10);
+  shortenBonusY = randomTen(0, height - 10);
+
+  snake.forEach(function isBonusOnSnake(part) {
+    const bonusIsOnSnake = part.x === shortenBonusX && part.y === shortenBonusY;
+    if (bonusIsOnSnake) drawShortenBonus();
+  });
+}
+
+function createEnlargenBonus() {
+  enlargeBonusX = randomTen(0, width - 10);
+  enlargeBonusY = randomTen(0, height - 10);
+
+  snake.forEach(function isBonusOnSnake(part) {
+    const bonusIsOnSnake = part.x === enlargeBonusX && part.y === enlargeBonusY;
+    if (bonusIsOnSnake) drawEnlargeBonus();
   });
 }
 
@@ -252,6 +307,17 @@ function changeDirection(event) {
   if (keyPressed === downKey && !goingUp) {
     dx = 0;
     dy = 10;
+  }
+}
+
+function createMaze() {
+  for (let y = 0; y < gridLevel1.length; y++) {
+    for (let x = 0; x < gridLevel1[y].length; x++) {
+      if (gridLevel1[y][x] === 1) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(x*10, y*10, 10, 10);
+      }
+    }
   }
 }
 

@@ -82,3 +82,13 @@ li {
   background: cornflowerblue;
   border: 1px solid darkcyan;
 }
+
+.violet {
+  background: violet;
+  border: 1px solid darkmagenta;
+}
+
+.grey {
+  background: gray;
+  border: 1px solid darkgray;
+}

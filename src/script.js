@@ -325,7 +325,23 @@ function didGameEnd() {
   for (let i = 4; i < snake.length; i++) {
     const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
 
-    if (didCollide) {
+    let didCollideWithMazeWall;
+
+    for (let y = 0; y < gridLevel1.length; y++) {
+      for (let x = 0; x < gridLevel1[y].length; x++) {
+        if (gridLevel1[y][x] === 1) {
+          ctx.fillStyle = "black";
+          ctx.fillRect(x*10, y*10, 10, 10);
+  
+          // Check collision with maze wall
+          if (x * 10 === snake[0].x && y * 10 === snake[0].y) {
+            didCollideWithMazeWall = true;
+          }
+        }
+      }
+    }
+
+    if (didCollide || didCollideWithMazeWall) {
       gameOver.style.display = "block";
       gameOver.addEventListener("click", startGame());
       return true;

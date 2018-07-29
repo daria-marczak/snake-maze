@@ -61,10 +61,7 @@ let multiplier;
 if (!multiplier) multiplier = 1;
 if (!respawnTime) respawnTime = 5000;
 
-localStorage.getItem("highest");
-startGame();
 
-createMaze(selected);
 
 function startGame() {
   ctx.fillStyle = canvasBackgroundColor;
@@ -74,6 +71,8 @@ function startGame() {
   createSlowBonus();
   createFastBonus();
   createMorePointsBonus();
+  verifyScore();
+
   createShortenBonus();
   createEnlargenBonus();
   document.addEventListener("keydown", changeDirection);
@@ -254,9 +253,9 @@ function verifyScore() {
   }
   if (score > highestScore) {
     highestScore = score;
-    localStorage.setItem("highest", highestScore);
+    if (localStorage == null) localStorage.setItem("highest", highestScore);
   }
-  highestScoresList.innerHTML = `Highest: ${highestScore}`
+  highestScoresList.innerHTML = "Highest score: " + localStorage.getItem("highest");
 
 }
 
@@ -431,3 +430,8 @@ function didGameEnd() {
     };
   }
 }
+
+localStorage.getItem("highest");
+startGame();
+
+createMaze(selected);

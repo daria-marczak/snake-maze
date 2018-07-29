@@ -39,11 +39,12 @@
 
     <div class="frame__score">
       <h2>Scores</h2>
-      <span id="score"></span>
+      <p id="score"></p>
+      <p id="highestscore"></p>
     </div>
 
     <div class="frame__selection">
-      <h2>Selecttion pane</h2>
+      <h2>Selection pane</h2>
       <div class="level">
         <p>Select level</p>
         <form id="levelSelect">
@@ -63,9 +64,21 @@
           <input id="number" type="number" value="5000" min="1000" max="100000">
           <input type="submit" class="submit" value="Select">
         </form>
-        
-
       </div>
+      <div class="multiplier">
+          <p>Select points multiplier</p>
+          <form id="multiplierSelect">
+            <input id="multiplier" type="number" value="1" min="1" max="10">
+            <input type="submit" class="submit" value="Select">
+          </form>
+        </div>
+        <div class="gameSpeed">
+            <p>Select game speed</p>
+            <form id="gameSpeedSelect">
+              <input id="gameSpeed" type="number" value="100" min="10" max="10000">
+              <input type="submit" class="submit" value="Select">
+            </form>
+          </div>
     </div>
   </div>
   <script type="text/javascript" src="src/maze.js"></script>

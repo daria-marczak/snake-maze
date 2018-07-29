@@ -1,7 +1,9 @@
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
-let gameSpeed = 100;
+let gameSpeed;
+if (!gameSpeed) gameSpeed = 100;
+
 const canvasBackgroundColor = "white";
 const snakeColor = "lightgreen";
 const snakeBorderColor = "white";
@@ -15,6 +17,12 @@ const levelSelection = document.querySelector("#levelSelect");
 const levelDropdown = document.querySelector("#levels");
 const timeSelection = document.querySelector("#timeSelect");
 const timeInput = document.querySelector("#number");
+const multiplierSelection = document.querySelector("#multiplierSelect");
+const multiplierInput = document.querySelector("#multiplier");
+const gameSpeedSelection = document.querySelector("#gameSpeedSelect");
+const gameSpeedInput = document.querySelector("#gameSpeed");
+
+const highestScoresList = document.querySelector("#highestscore");
 
 let snake = [
   { x: 150, y: 150 },
@@ -29,6 +37,7 @@ const height = canvas.height;
 
 let standardScore = 10;
 let score = 0;
+let highestScore;
 let changingDirection = false;
 let foodX;
 let foodY;
@@ -47,18 +56,19 @@ let dx = 10;
 let dy = 0;
 
 let respawnTime;
+let multiplier;
 
+if (!multiplier) multiplier = 1;
 if (!respawnTime) respawnTime = 5000;
 
+localStorage.getItem("highest");
 startGame();
-
 
 createMaze(selected);
 
 function startGame() {
   ctx.fillStyle = canvasBackgroundColor;
   ctx.fillRect(0, 0, width, height);
-
   main();
   createFood();
   createSlowBonus();
@@ -82,6 +92,7 @@ function main() {
     drawFood();
     advanceSnake();
     drawSnake();
+    verifyScore();
     main();
   }, gameSpeed);
 }
@@ -212,21 +223,41 @@ function advanceSnake() {
   const didEatMorePointsBonus = snake[0].x === morePointsBonusX && snake[0].y === morePointsBonusY;
   if (didEatMorePointsBonus) {
     createMorePointsBonus();
-    score += 50;
+    score * multiplier;
     document.querySelector("#score").innerHTML = ` Score: ${score}`;
   };
 
   const didEatShortenBonus = snake[0].x === shortenBonusX && snake[0].y === shortenBonusY;
   if (didEatShortenBonus) {
     createShortenBonus();
-    snake.pop();
+    if (multiplier > 1) {
+      for (let i = 0; i <= multiplier; i++) {
+        snake.pop();
+      }
+    }
   }
 
   const didEatEnlargenBonus = snake[0].x === enlargeBonusX && snake[0].y === enlargeBonusY;
   if (didEatEnlargenBonus) {
     createEnlargenBonus();
-  snake.unshift(head);
+    if (multiplier > 1) {
+      for (let i = 0; i <= multiplier; i++) {
+        snake.unshift(head);
+      }
+    }
   }
+}
+
+function verifyScore() {
+  if (!highestScore) {
+    highestScore = 0;
+  }
+  if (score > highestScore) {
+    highestScore = score;
+    localStorage.setItem("highest", highestScore);
+  }
+  highestScoresList.innerHTML = `Highest: ${highestScore}`
+
 }
 
 function randomTen(min, max) {
@@ -361,7 +392,17 @@ levelSelection.addEventListener("submit", (event) => {
 timeSelection.addEventListener("submit", event => {
   event.preventDefault();
   respawnTime = timeInput.value;
-})
+});
+
+multiplierSelection.addEventListener("submit", event => {
+  event.preventDefault();
+  multiplier = multiplierInput.value;
+});
+
+gameSpeedSelection.addEventListener("submit", event => {
+  event.preventDefault();
+  gameSpeed = gameSpeedInput.value;
+});
 
 function didGameEnd() {
   if (!levels[selected]) {

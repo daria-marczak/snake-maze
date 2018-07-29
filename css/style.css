@@ -100,7 +100,7 @@ select, input[type=number] {
   border: 1px solid lightgrey;
 }
 
-.level, .time {
+.level, .time, .multiplier, .gameSpeed {
   display: flex;
   align-items: center;
 }

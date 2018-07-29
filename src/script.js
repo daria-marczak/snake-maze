@@ -337,14 +337,16 @@ levelSelection.addEventListener("submit", (event) => {
 });
 
 function didGameEnd() {
+  if (!levels[selected]) {
+    levels[selected] = selected;
+  }
   for (let i = 4; i < snake.length; i++) {
     const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
 
     let didCollideWithMazeWall;
-
-    for (let y = 0; y < levels.gridLevel1.length; y++) {
-      for (let x = 0; x < levels.gridLevel1[y].length; x++) {
-        if (levels.gridLevel1[y][x] === 1) {
+    for (let y = 0; y < levels[selected].length; y++) {
+      for (let x = 0; x < levels[selected][y].length; x++) {
+        if (levels[selected][y][x] === 1) {
           ctx.fillStyle = "black";
           ctx.fillRect(x*10, y*10, 10, 10);
 

@@ -23,26 +23,6 @@ h1 {
   display: inline;
 }
 
-#over {
-  margin: 0 auto;
-  margin-top: 1.5em;
-  padding:  0.5em 0.95em;
-  background: white;
-  border: none;
-  color: rgb(215, 109, 119);
-  cursor: pointer;
-  font-size: 0.95em;
-  border-radius: 15px;
-  font-weight: bold;
-  -webkit-box-shadow: 0 0 5px #fff;
-        box-shadow: 0 0 5px #fff;
-  transition: all .2s ease-in-out;
-}
-
-#over:hover {
-  transform: scale(1.1);
-}
-
 .frame {
   border: none;
   background: white;
@@ -56,8 +36,12 @@ h1 {
   display: flex;
 }
 
-.frame__legend, .frame__score, .frame__selection {
+.frame__legend, .frame__score {
   flex: 1;
+}
+
+.frame__selection {
+  flex: 2;
 }
 
 ul {
@@ -100,4 +84,34 @@ h2 {
 .grey {
   background: gray;
   border: 1px solid darkgray;
+}
+
+.submit {
+  padding: 0.5em 0.95em;
+  background: rgb(215, 109, 119);
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+select, input[type=number] {
+  flex: 1;
+  padding: 0.5em 0.95em;
+  border: 1px solid lightgrey;
+}
+
+.level, .time {
+  display: flex;
+  align-items: center;
+}
+
+form {
+  margin-left: 0.7em;
+  flex: 1;
+}
+
+.frame__selection p {
+  flex: 1;
+  padding-top: 1.5em;
+  margin-right: 0.7em;
 }

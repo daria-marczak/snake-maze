@@ -13,7 +13,8 @@ if (!selected) selected = levels.gridLevel1;
 
 const levelSelection = document.querySelector("#levelSelect");
 const levelDropdown = document.querySelector("#levels");
-const gameOver = document.querySelector("#over");
+const timeSelection = document.querySelector("#timeSelect");
+const timeInput = document.querySelector("#number");
 
 let snake = [
   { x: 150, y: 150 },
@@ -26,7 +27,7 @@ let snake = [
 const width = canvas.width;
 const height = canvas.height;
 
-
+let standardScore = 10;
 let score = 0;
 let changingDirection = false;
 let foodX;
@@ -45,6 +46,9 @@ let enlargeBonusY;
 let dx = 10;
 let dy = 0;
 
+let respawnTime;
+
+if (!respawnTime) respawnTime = 5000;
 
 startGame();
 
@@ -66,7 +70,6 @@ function startGame() {
 }
 
 function main() {
-  gameOver.style.display = "none";
   if (didGameEnd()) return;
   setTimeout(function onTick() {
     changingDirection = false;
@@ -162,10 +165,29 @@ function advanceSnake() {
   if (head.y > 360) {
     head.y = 0;
   }
-
+  const level = levelDropdown.options[levelDropdown.selectedIndex].value;
+  switch(level) {
+    case "gridLevel1":
+      standardScore;
+      break;
+    case "gridLevel2":
+      standardScore = 20;
+      break;
+    case "gridLevel3":
+      standardScore = 30;
+      break;
+    case "gridLevel4":
+      standardScore = 40;
+      break;
+    case "gridLevel5":
+      standardScore = 50;
+      break;
+    default:
+      standardScore;
+  }
   const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
   if (didEatFood) {
-    score += 10;
+    score += standardScore;
     document.querySelector("#score").innerHTML = ` Current score: ${score}`;
     createFood();
     eatenFood ++;
@@ -177,14 +199,14 @@ function advanceSnake() {
   if (didEatSlowBonus) {
     createSlowBonus();
     gameSpeed = gameSpeed * 2;
-    setTimeout(function() {gameSpeed = 100}, 5000);
+    setTimeout(function() {gameSpeed = 100}, respawnTime);
   };
 
   const didEatFastBonus = snake[0].x === fastBonusX && snake[0].y === fastBonusY;
   if (didEatFastBonus) {
     createFastBonus();
     gameSpeed = gameSpeed / 2;
-    setTimeout(function() {gameSpeed = 100}, 5000);
+    setTimeout(function() {gameSpeed = 100}, respawnTime)
   };
 
   const didEatMorePointsBonus = snake[0].x === morePointsBonusX && snake[0].y === morePointsBonusY;
@@ -336,6 +358,11 @@ levelSelection.addEventListener("submit", (event) => {
   createMaze(levels[selected]);
 });
 
+timeSelection.addEventListener("submit", event => {
+  event.preventDefault();
+  respawnTime = timeInput.value;
+})
+
 function didGameEnd() {
   if (!levels[selected]) {
     levels[selected] = selected;
@@ -359,8 +386,6 @@ function didGameEnd() {
     }
 
     if (didCollide || didCollideWithMazeWall) {
-      gameOver.style.display = "block";
-      gameOver.addEventListener("click", startGame());
       return true;
     };
   }

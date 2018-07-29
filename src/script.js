@@ -4,10 +4,15 @@ const ctx = canvas.getContext("2d");
 let gameSpeed = 100;
 const canvasBackgroundColor = "white";
 const snakeColor = "lightgreen";
-const snakeBorderColor = "darkgreen";
+const snakeBorderColor = "white";
 const foodColor = "red";
 const foodBorderColor = "darkred";
+let selected;
 
+if (!selected) selected = levels.gridLevel1;
+
+const levelSelection = document.querySelector("#levelSelect");
+const levelDropdown = document.querySelector("#levels");
 const gameOver = document.querySelector("#over");
 
 let snake = [
@@ -43,7 +48,13 @@ let dy = 0;
 
 startGame();
 
+
+createMaze(selected);
+
 function startGame() {
+  ctx.fillStyle = canvasBackgroundColor;
+  ctx.fillRect(0, 0, width, height);
+
   main();
   createFood();
   createSlowBonus();
@@ -57,11 +68,10 @@ function startGame() {
 function main() {
   gameOver.style.display = "none";
   if (didGameEnd()) return;
-  createMaze();
   setTimeout(function onTick() {
     changingDirection = false;
     clearCanvas();
-    if (eatenFood > 5) drawSlowBonus();
+    if (eatenFood > 2) drawSlowBonus();
     if (eatenFood > 10) drawFastBonus();
     if (eatenFood > 25) drawMorePointsBonus();
     if (eatenFood > 12) drawShortenBonus();
@@ -75,7 +85,7 @@ function main() {
 
 function clearCanvas() {
   ctx.fillStyle = canvasBackgroundColor;
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(snake[snake.length - 1].x, snake[snake.length - 1].y, 10, 10);
 }
 
 function drawFood() {
@@ -156,10 +166,9 @@ function advanceSnake() {
   const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
   if (didEatFood) {
     score += 10;
-    document.querySelector("#score").innerHTML = ` Score: ${score}`;
+    document.querySelector("#score").innerHTML = ` Current score: ${score}`;
     createFood();
     eatenFood ++;
-    console.log(eatenFood);
   } else {
     snake.pop();
   }
@@ -310,10 +319,10 @@ function changeDirection(event) {
   }
 }
 
-function createMaze() {
-  for (let y = 0; y < gridLevel1.length; y++) {
-    for (let x = 0; x < gridLevel1[y].length; x++) {
-      if (gridLevel1[y][x] === 1) {
+function createMaze(selected) {
+  for (let y = 0; y < selected.length; y++) {
+    for (let x = 0; x < selected[y].length; x++) {
+      if (selected[y][x] === 1) {
         ctx.fillStyle = "black";
         ctx.fillRect(x*10, y*10, 10, 10);
       }
@@ -321,18 +330,24 @@ function createMaze() {
   }
 }
 
+levelSelection.addEventListener("submit", (event) => {
+  event.preventDefault();
+  selected = levelDropdown.options[levelDropdown.selectedIndex].value;
+  createMaze(levels[selected]);
+});
+
 function didGameEnd() {
   for (let i = 4; i < snake.length; i++) {
     const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
 
     let didCollideWithMazeWall;
 
-    for (let y = 0; y < gridLevel1.length; y++) {
-      for (let x = 0; x < gridLevel1[y].length; x++) {
-        if (gridLevel1[y][x] === 1) {
+    for (let y = 0; y < levels.gridLevel1.length; y++) {
+      for (let x = 0; x < levels.gridLevel1[y].length; x++) {
+        if (levels.gridLevel1[y][x] === 1) {
           ctx.fillStyle = "black";
           ctx.fillRect(x*10, y*10, 10, 10);
-  
+
           // Check collision with maze wall
           if (x * 10 === snake[0].x && y * 10 === snake[0].y) {
             didCollideWithMazeWall = true;

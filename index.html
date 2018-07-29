@@ -8,36 +8,55 @@
 
 <body>
 	<h1>Snake game</h1>
-	<div id="score">
-	</div>
 	<canvas id="canvas" height="360px" width="360px">Sorry, but your browser does not support HTML5.</canvas>
   <button class="over" id="over">Restart</button>
 
-  <fieldset>
-    <h2>Legend for the boosters</h2>
-    <ul>
-      <li>
-        <div class="square yellow"></div>
-        Slows down for 5 seconds
-      </li>
-      <li>
-        <div class="square green"></div>
-        Boots up the speed for 5 seconds
-      </li>
-      <li>
-        <div class="square blue"></div>
-        Adds 50 points to your score
-      </li>
-      <li>
-        <div class="square violet"></div>
-        Removes one part of the snake
-      </li>
-      <li>
-        <div class="square grey"></div>
-        Adds one part of the snake
-      </li>
-    </ul>
-  </fieldset>
+  <div class="frame">
+    <div class="frame__legend">
+      <h2>Legend for the boosters</h2>
+      <ul>
+        <li>
+          <div class="square yellow"></div>
+          Slows down for 5 seconds
+        </li>
+        <li>
+          <div class="square green"></div>
+          Boosts up the speed for 5 seconds
+        </li>
+        <li>
+          <div class="square blue"></div>
+          Adds 50 points to your score
+        </li>
+        <li>
+          <div class="square violet"></div>
+          Removes one part of the snake
+        </li>
+        <li>
+          <div class="square grey"></div>
+          Adds one part of the snake
+        </li>
+      </ul>
+    </div>
+
+    <div class="frame__score">
+      <h2>Scores</h2>
+      <span id="score"></span>
+    </div>
+
+    <div class="frame__selection">
+      <h2>Select</h2>
+      <form id="levelSelect">
+        <select id="levels">
+          <option value="gridLevel1">One</option>
+          <option value="gridLevel2">Two</option>
+          <option value="gridLevel3">Three</option>
+          <option value="gridLevel4">Four</option>
+          <option value="gridLevel5">Five</option>
+        </select>
+        <input type="submit">
+      </form>
+    </div>
+  </div>
 	<script type="text/javascript" src="src/maze.js"></script>
 	<script type="text/javascript" src="src/script.js"></script>
 </body>

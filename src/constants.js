@@ -62,4 +62,8 @@ if (!multiplier) multiplier = 1;
 if (!respawnTime) respawnTime = 5000;
 
 let scores = [];
-let fiveHighestScores;
+let highestFive;
+
+const highestList = document.querySelector("#fiveHighest");
+
+let localScores;

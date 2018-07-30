@@ -184,11 +184,15 @@ function advanceSnake() {
 
 function verifyScore() {
   if (!localStorage == null) localStorage.getItem("highest", highestScore);
+  localStorage.getItem("higherFives", scores);
   if (score > localStorage.highest) {
+    scores.push(score);
     highestScore = score;
     localStorage.setItem("highest", score);
+    localStorage.setItem("higherFives", scores);
   }
-
+  fiveHighestScores = localStorage.higherFives.split(", ").sort((first, second) => first - second);
+  // console.log(localStorage.higherFives, fiveHighestScores.sort((first, second) => second - first));
   highestScoresList.innerHTML = "Highest score: " + localStorage.highest;
 
 }

@@ -80,7 +80,6 @@ function drawBonus(type) {
   ctx.fillRect(properties.x, properties.y, 10, 10);
 
   bonusAmount = 1;
-  console.log(properties.type);
 }
 
 function advanceSnake() {
@@ -136,90 +135,44 @@ function advanceSnake() {
 
   const didEatBonus = snake[0].x === properties.x && snake[0].y === properties.y;
   if (didEatBonus) {
-console.log(properties.type);
     if (properties.type === "slowBonus") {
       gameSpeed = gameSpeed * 2;
       setTimeout(function () { gameSpeed = 100 }, respawnTime);
       bonusAmount = 0;
-      drawBonus(`slowBonus`);
     }
 
     else if (properties.type === "fastBonus") {
-      console.log(properties.type, "being fast");
       gameSpeed = gameSpeed / 2;
       setTimeout(function () { gameSpeed = 100 }, respawnTime)
       bonusAmount = 0;
-      drawBonus(`fastBonus`);
     }
 
-    // else if (properties.type === morePointsBonus) {
-    //   console.log("score multiplier");
-    //   score * multiplier;
-    //   bonusAmount = 0;
-    //   drawBonus(`morePointsBonus`);
-    // }
+    else if (properties.type === "morePointsBonus") {
+      score = score + standardScore * multiplier;
+      bonusAmount = 0;
+    }
 
-    // else if (properties.type === shortenBonus) {
-    //   console.log("short")
-    //   if (multiplier > 1) {
-    //     for (let i = 0; i <= multiplier; i++) {
-    //       snake.pop();
-    //     }
-    //   }
-    //   bonusAmount = 0;
-    //   drawBonus(`shortenBonus`);
-    // }
+    else if (properties.type === "shortenBonus") {
+      snake.pop();
+      if (multiplier > 1) {
+        for (let i = 0; i < multiplier; i++) {
+          snake.pop();
+        }
+      }
+      bonusAmount = 0;
+    }
 
-    // else if (properties.type === enlargeBonus) {
-    //   console.log("enlarge")
-    //   if (multiplier > 1) {
-    //     for (let i = 0; i <= multiplier; i++) {
-    //       snake.unshift(head);
-    //     }
-    //   }
-    //   enlargeBonusAmount = 0;
-    //   drawBonus(`morePointsBonus`);
-    // }
+    else if (properties.type === "enlargeBonus") {
+      snake.unshift(head);
 
-    // switch(type) {
-    //   case slowBonus:
-    //     gameSpeed = gameSpeed * 2;
-    //     setTimeout(function() {gameSpeed = 100}, respawnTime);
-    //     bonusAmount = 0;
-    //     drawBonus(`slowBonus`);
-    //     break;
-    //   case fastBonus:
-    //     console.log("being fast");
-    //     gameSpeed = gameSpeed / 2;
-    //     setTimeout(function() {gameSpeed = 100}, respawnTime)
-    //     bonusAmount = 0;
-    //     drawBonus(`fastBonus`);
-    //     break;
-    //   case morePointsBonus:
-    //     console.log("score multiplier");
-    //     score * multiplier;
-    //     bonusAmount = 0;
-    //     drawBonus(`morePointsBonus`);
-    //     break;
-    //   case shortenBonus:
-    //     if (multiplier > 1) {
-    //         for (let i = 0; i <= multiplier; i++) {
-    //           snake.pop();
-    //         }
-    //       }
-    //     shortenBonusAmount = 0;
-    //     drawBonus(`morePointsBonus`);
-    //     break;
-    //   case enlargeBonus:
-    //     if (multiplier > 1) {
-    //       for (let i = 0; i <= multiplier; i++) {
-    //         snake.unshift(head);
-    //       }
-    //     }
-    //     enlargeBonusAmount = 0;
-    //     drawBonus(`morePointsBonus`);
-    //     break;
-    // }
+      if (multiplier > 1) {
+        for (let i = 0; i <= multiplier; i++) {
+          snake.unshift(head);
+        }
+      }
+      enlargeBonusAmount = 0;
+      drawBonus(`morePointsBonus`);
+    }
   }
 }
 

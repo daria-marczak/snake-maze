@@ -1,22 +1,3 @@
-let slowBonus;
-let x;
-let y;
-let type;
-let properties = { type, x, y };
-let food;
-let fastBonus;
-let morePointsBonus;
-let shortenBonus;
-let enlargeBonus;
-let canOmitWallsBonus;
-
-let isOmittingWallsPossible = false;
-
-let bonusAmount = 0;
-
-let fastBonusAmount = 0;
-let morePointsBonusAmount = 0;
-
 function startGame() {
   ctx.fillStyle = canvasBackgroundColor;
   ctx.fillRect(0, 0, width, height);

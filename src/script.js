@@ -37,6 +37,7 @@ function main() {
     if (eatenFood % 17 === 0 && bonusAmount === 0) drawBonus(`morePointsBonus`);
     if (eatenFood % 10 === 0 && bonusAmount === 0) drawBonus(`shortenBonus`);
     if (eatenFood % 15 === 0 && bonusAmount === 0) drawBonus(`enlargeBonus`);
+    if (eatenFood % 22 === 0 && bonusAmount === 0) drawBonus(`canOmitWallsBonus`)
     drawFood();
     advanceSnake();
     drawSnake();
@@ -68,7 +69,9 @@ function drawBonus(type) {
     shortenBonusColor: "violet",
     shortenBonusColorBorder: "darkmagenta",
     enlargeBonusColor: "grey",
-    enlargeBonusColorBorder: "darkgrey"
+    enlargeBonusColorBorder: "darkgrey",
+    canOmitWallsBonusColor: "pink",
+    canOmitWallsBonusBorderColor: "darkorchid"
   };
 
   properties = {
@@ -175,6 +178,14 @@ function advanceSnake() {
       }
       enlargeBonusAmount = 0;
       drawBonus(`morePointsBonus`);
+    }
+
+    else if (properties.type === "canOmitWallsBonus") {
+      isOmittingWallsPossible = true;
+      console.log("I can omit walls");
+      setTimeout(function() {
+        isOmittingWallsPossible = false;
+      }, respawnTime);
     }
   }
 }
@@ -293,26 +304,30 @@ function didGameEnd() {
   if (!levels[selected]) {
     levels[selected] = selected;
   }
-  for (let i = 4; i < snake.length; i++) {
-    const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
 
-    let didCollideWithMazeWall;
-    for (let y = 0; y < levels[selected].length; y++) {
-      for (let x = 0; x < levels[selected][y].length; x++) {
-        if (levels[selected][y][x] === 1) {
-          // Check collision with maze wall
-          if (x * 10 === snake[0].x && y * 10 === snake[0].y) {
-            didCollideWithMazeWall = true;
+  if(!isOmittingWallsPossible) {
+    for (let i = 4; i < snake.length; i++) {
+      const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
+  
+      let didCollideWithMazeWall;
+      for (let y = 0; y < levels[selected].length; y++) {
+        for (let x = 0; x < levels[selected][y].length; x++) {
+          if (levels[selected][y][x] === 1) {
+            // Check collision with maze wall
+            if (x * 10 === snake[0].x && y * 10 === snake[0].y) {
+              didCollideWithMazeWall = true;
+            }
           }
         }
       }
+  
+      if (didCollide || didCollideWithMazeWall) {
+        verifyScore();
+        return true;
+      };
     }
-
-    if (didCollide || didCollideWithMazeWall) {
-      verifyScore();
-      return true;
-    };
   }
+  
 }
 
 localStorage.getItem("highest");

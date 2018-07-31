@@ -154,7 +154,8 @@ function advanceSnake() {
     }
 
     else if (properties.type === "morePointsBonus") {
-      score = score + standardScore * multiplier;
+      score = score + bonusScore * multiplier;
+      document.querySelector("#score").innerHTML = ` Current score: ${score}`;
       bonusAmount = 0;
     }
 
@@ -308,7 +309,7 @@ function didGameEnd() {
   if(!isOmittingWallsPossible) {
     for (let i = 4; i < snake.length; i++) {
       const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
-  
+
       let didCollideWithMazeWall;
       for (let y = 0; y < levels[selected].length; y++) {
         for (let x = 0; x < levels[selected][y].length; x++) {
@@ -320,14 +321,13 @@ function didGameEnd() {
           }
         }
       }
-  
+
       if (didCollide || didCollideWithMazeWall) {
         verifyScore();
         return true;
       };
     }
   }
-  
 }
 
 localStorage.getItem("highest");

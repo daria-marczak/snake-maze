@@ -1,15 +1,26 @@
+let slowBonus;
+let properties;
+let food;
+let fastBonus;
+let morePointsBonus;
+let shortenBonus;
+let enlargeBonus;
+
+
+let bonusAmount = 0;
+
 function startGame() {
   ctx.fillStyle = canvasBackgroundColor;
   ctx.fillRect(0, 0, width, height);
   main();
   createFood();
-  createSlowBonus();
-  createFastBonus();
-  createMorePointsBonus();
+  // createBonus();
+  // createFastBonus();
+  // createMorePointsBonus();
   verifyScore();
 
-  createShortenBonus();
-  createEnlargenBonus();
+  // createShortenBonus();
+  // createEnlargenBonus();
   document.addEventListener("keydown", changeDirection);
 }
 
@@ -18,15 +29,14 @@ function main() {
   setTimeout(function onTick() {
     changingDirection = false;
     clearCanvas();
-    if (eatenFood > 2) drawSlowBonus();
-    if (eatenFood > 10) drawFastBonus();
-    if (eatenFood > 25) drawMorePointsBonus();
-    if (eatenFood > 12) drawShortenBonus();
-    if (eatenFood > 15) drawEnlargeBonus();
+    if (eatenFood > 2 && bonusAmount === 0) drawBonus(`slowBonus`);
+    if (eatenFood > 10) drawBonus(`fastBonus`);
+    if (eatenFood > 25) drawBonus(`morePointsBonus`);
+    if (eatenFood > 12) drawBonus(`shortenBonus`);
+    if (eatenFood > 15) drawBonus(`enlargeBonus`);
     drawFood();
     advanceSnake();
     drawSnake();
-    verifyScore();
     main();
   }, gameSpeed);
 }
@@ -43,50 +53,33 @@ function drawFood() {
   ctx.strokeRect(foodX, foodY, 10, 10);
 }
 
-function drawSlowBonus() {
-  ctx.fillStyle = "yellow";
-  ctx.strokeStyle = "darkorange";
-  ctx.fillRect(slowBonusX, slowBonusY, 10, 10);
-  ctx.strokeRect(slowBonusX, slowBonusY, 10, 10);
-}
+function drawBonus(type) {
+  const colors = {
+    slowBonusColor: "yellow",
+    slowBonusBorderColor: "darkorange",
+    fastBonusColor: "green",
+    fastBonusBorderColor: "darkgreen",
+    morePointsBonusColor: "cornflowerblue",
+    morePointsBonusBorderColor: "darkcyan",
+    shortenBonusColor: "violet",
+    shortenBonusColorBorder: "darkmagenta",
+    enlargeBonusColor: "grey",
+    enlargeBonusColorBorder: "darkgrey"
+  };
 
-function drawFastBonus() {
-  ctx.fillStyle = "green";
-  ctx.strokeStyle = "darkgreen";
-  ctx.fillRect(fastBonusX, fastBonusY, 10, 10);
-  ctx.strokeRect(fastBonusX, fastBonusY, 10, 10);
-}
+  properties = {
+    type,
+    x: randomTen(0, width - 10),
+    y: randomTen(0, height - 10)
+  };
 
-// function drawBonus(type) {
-//   switch (type) {
-//     case slowBonus:
-//       ctx.fillStyle = "yellow";
-//       ctx.strokeStyle = "darkyellow";
-//       ctx.fillRect(slowBonusX, slowBonusY, 10, 10);
-//       ctx.strokeRect(slowBonusX, slowBonusY, 10, 10);
-//       break;
-//   }
-// }
+  console.log(properties.type, properties.x, properties.y)
 
-function drawMorePointsBonus() {
-  ctx.fillStyle = "cornflowerblue";
-  ctx.strokeStyle = "darkcyan";
-  ctx.fillRect(morePointsBonusX, morePointsBonusY, 10, 10);
-  ctx.strokeRect(morePointsBonusX, morePointsBonusY, 10, 10);
-}
+  ctx.fillStyle = colors[`${properties.type}Color`];
+  ctx.strokeStyle = colors[`${properties.type}BorderColor`];
 
-function drawShortenBonus() {
-  ctx.fillStyle = "violet";
-  ctx.strokeStyle = "darkmagenta";
-  ctx.fillRect(shortenBonusX, shortenBonusY, 10, 10);
-  ctx.strokeRect(shortenBonusX, shortenBonusY, 10, 10);
-}
-
-function drawEnlargeBonus() {
-  ctx.fillStyle = "grey";
-  ctx.strokeStyle = "darkgrey";
-  ctx.fillRect(enlargeBonusX, enlargeBonusY, 10, 10);
-  ctx.strokeRect(enlargeBonusX, enlargeBonusY, 10, 10);
+  ctx.fillRect(properties.x, properties.y, 10, 10);
+  bonusAmount = bonusAmount + 1
 }
 
 function advanceSnake() {
@@ -140,46 +133,46 @@ function advanceSnake() {
     snake.pop();
   }
 
-  const didEatSlowBonus = snake[0].x === slowBonusX && snake[0].y === slowBonusY;
-  if (didEatSlowBonus) {
-    createSlowBonus();
-    gameSpeed = gameSpeed * 2;
-    setTimeout(function() {gameSpeed = 100}, respawnTime);
-  };
+  // const didEatSlowBonus = snake[0].x === slowBonusX && snake[0].y === slowBonusY;
+  // if (didEatSlowBonus) {
+  //   createSlowBonus();
+  //   gameSpeed = gameSpeed * 2;
+  //   setTimeout(function() {gameSpeed = 100}, respawnTime);
+  // };
 
-  const didEatFastBonus = snake[0].x === fastBonusX && snake[0].y === fastBonusY;
-  if (didEatFastBonus) {
-    createFastBonus();
-    gameSpeed = gameSpeed / 2;
-    setTimeout(function() {gameSpeed = 100}, respawnTime)
-  };
+  // const didEatFastBonus = snake[0].x === fastBonusX && snake[0].y === fastBonusY;
+  // if (didEatFastBonus) {
+  //   createFastBonus();
+  //   gameSpeed = gameSpeed / 2;
+  //   setTimeout(function() {gameSpeed = 100}, respawnTime)
+  // };
 
-  const didEatMorePointsBonus = snake[0].x === morePointsBonusX && snake[0].y === morePointsBonusY;
-  if (didEatMorePointsBonus) {
-    createMorePointsBonus();
-    score * multiplier;
-    document.querySelector("#score").innerHTML = ` Score: ${score}`;
-  };
+  // const didEatMorePointsBonus = snake[0].x === morePointsBonusX && snake[0].y === morePointsBonusY;
+  // if (didEatMorePointsBonus) {
+  //   createMorePointsBonus();
+  //   score * multiplier;
+  //   document.querySelector("#score").innerHTML = ` Score: ${score}`;
+  // };
 
-  const didEatShortenBonus = snake[0].x === shortenBonusX && snake[0].y === shortenBonusY;
-  if (didEatShortenBonus) {
-    createShortenBonus();
-    if (multiplier > 1) {
-      for (let i = 0; i <= multiplier; i++) {
-        snake.pop();
-      }
-    }
-  }
+  // const didEatShortenBonus = snake[0].x === shortenBonusX && snake[0].y === shortenBonusY;
+  // if (didEatShortenBonus) {
+  //   createShortenBonus();
+  //   if (multiplier > 1) {
+  //     for (let i = 0; i <= multiplier; i++) {
+  //       snake.pop();
+  //     }
+  //   }
+  // }
 
-  const didEatEnlargenBonus = snake[0].x === enlargeBonusX && snake[0].y === enlargeBonusY;
-  if (didEatEnlargenBonus) {
-    createEnlargenBonus();
-    if (multiplier > 1) {
-      for (let i = 0; i <= multiplier; i++) {
-        snake.unshift(head);
-      }
-    }
-  }
+  // const didEatEnlargenBonus = snake[0].x === enlargeBonusX && snake[0].y === enlargeBonusY;
+  // if (didEatEnlargenBonus) {
+  //   createEnlargenBonus();
+  //   if (multiplier > 1) {
+  //     for (let i = 0; i <= multiplier; i++) {
+  //       snake.unshift(head);
+  //     }
+  //   }
+  // }
 }
 
 function verifyScore() {
@@ -188,6 +181,7 @@ function verifyScore() {
     scores.push(score);
     localStorage.setItem("highest", score);
   }
+
   highestFive = scores.sort((a, b) => b - a).slice(0, 5).toString(", ");
   localStorage.setItem("highestFive", highestFive);
   localScores = localStorage.getItem("highestFive").split(",");
@@ -195,7 +189,6 @@ function verifyScore() {
   for (let i = 0; i < 5 ; i++) {
     highestList.innerHTML = `<li class="score__item"> ${"undefined" == typeof localScores[i] ? "" : localScores[i]}</li>`
   }
-  
 }
 
 function randomTen(min, max) {
@@ -212,56 +205,67 @@ function createFood() {
   });
 }
 
-function createSlowBonus() {
-  slowBonusX = randomTen(0, width - 10);
-  slowBonusY = randomTen(0, height - 10);
+// function createSlowBonus() {
+//   slowBonusX = randomTen(0, width - 10);
+//   slowBonusY = randomTen(0, height - 10);
 
-  snake.forEach(function isBonusOnSnake(part) {
-    const bonusIsOnSnake = part.x === slowBonusX && part.y === slowBonusY;
-    if (bonusIsOnSnake) drawSlowBonus();
-  });
-}
+//   snake.forEach(function isBonusOnSnake(part) {
+//     const bonusIsOnSnake = part.x === slowBonusX && part.y === slowBonusY;
+//     if (bonusIsOnSnake) drawSlowBonus();
+//   });
+// }
 
-function createFastBonus() {
-  fastBonusX = randomTen(0, width - 10);
-  fastBonusY = randomTen(0, height - 10);
+// function createFastBonus() {
+//   fastBonusX = randomTen(0, width - 10);
+//   fastBonusY = randomTen(0, height - 10);
 
-  snake.forEach(function isBonusOnSnake(part) {
-    const bonusIsOnSnake = part.x === fastBonusX && part.y === fastBonusY;
-    if (bonusIsOnSnake) drawFastBonus();
-  });
-}
+//   snake.forEach(function isBonusOnSnake(part) {
+//     const bonusIsOnSnake = part.x === fastBonusX && part.y === fastBonusY;
+//     if (bonusIsOnSnake) drawFastBonus();
+//   });
+// }
 
-function createMorePointsBonus() {
-  morePointsBonusX = randomTen(0, width - 10);
-  morePointsBonusY = randomTen(0, height - 10);
+// function createMorePointsBonus() {
+//   morePointsBonusX = randomTen(0, width - 10);
+//   morePointsBonusY = randomTen(0, height - 10);
 
-  snake.forEach(function isBonusOnSnake(part) {
-    const bonusIsOnSnake = part.x === morePointsBonusX && part.y === morePointsBonusY;
-    if (bonusIsOnSnake) drawMorePointsBonus();
-  });
-}
+//   snake.forEach(function isBonusOnSnake(part) {
+//     const bonusIsOnSnake = part.x === morePointsBonusX && part.y === morePointsBonusY;
+//     if (bonusIsOnSnake) drawMorePointsBonus();
+//   });
+// }
 
-function createShortenBonus() {
-  shortenBonusX = randomTen(0, width - 10);
-  shortenBonusY = randomTen(0, height - 10);
+// function createShortenBonus() {
+//   shortenBonusX = randomTen(0, width - 10);
+//   shortenBonusY = randomTen(0, height - 10);
 
+//   snake.forEach(function isBonusOnSnake(part) {
+//     const bonusIsOnSnake = part.x === shortenBonusX && part.y === shortenBonusY;
+//     if (bonusIsOnSnake) drawShortenBonus();
+//   });
+// }
+
+// function createEnlargenBonus() {
+//   enlargeBonusX = randomTen(0, width - 10);
+//   enlargeBonusY = randomTen(0, height - 10);
+
+//   snake.forEach(function isBonusOnSnake(part) {
+//     const bonusIsOnSnake = part.x === enlargeBonusX && part.y === enlargeBonusY;
+
+//     if (bonusIsOnSnake) drawEnlargeBonus();
+//   });
+// }
+
+function createBonus(type) {
+  console.log(type);
+  // console.log(properties.x, properties.y)
   snake.forEach(function isBonusOnSnake(part) {
     const bonusIsOnSnake = part.x === shortenBonusX && part.y === shortenBonusY;
     if (bonusIsOnSnake) drawShortenBonus();
   });
 }
 
-function createEnlargenBonus() {
-  enlargeBonusX = randomTen(0, width - 10);
-  enlargeBonusY = randomTen(0, height - 10);
-
-  snake.forEach(function isBonusOnSnake(part) {
-    const bonusIsOnSnake = part.x === enlargeBonusX && part.y === enlargeBonusY;
-
-    if (bonusIsOnSnake) drawEnlargeBonus();
-  });
-}
+createBonus(`slowBonus`)
 
 function drawSnake() {
   snake.forEach(drawSnakePart);
@@ -363,6 +367,7 @@ function didGameEnd() {
     }
 
     if (didCollide || didCollideWithMazeWall) {
+      verifyScore();
       return true;
     };
   }

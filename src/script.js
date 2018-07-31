@@ -11,6 +11,8 @@ let enlargeBonus;
 
 let bonusAmount = 0;
 
+let fastBonusAmount = 0;
+let morePointsBonusAmount = 0;
 
 function startGame() {
   ctx.fillStyle = canvasBackgroundColor;
@@ -27,11 +29,11 @@ function main() {
   setTimeout(function onTick() {
     changingDirection = false;
     clearCanvas();
-    if (eatenFood > 2 && bonusAmount === 0) drawBonus(`slowBonus`);
-    if (eatenFood > 10 && bonusAmount === 1) drawBonus(`fastBonus`);
-    if (eatenFood > 25 && bonusAmount === 2) drawBonus(`morePointsBonus`);
-    if (eatenFood > 12  && bonusAmount === 3) drawBonus(`shortenBonus`);
-    if (eatenFood > 15 && bonusAmount === 4) drawBonus(`enlargeBonus`);
+    if (eatenFood % 7 === 0 && bonusAmount === 0) drawBonus(`slowBonus`);
+    if (eatenFood % 9 === 0 && bonusAmount === 0) drawBonus(`fastBonus`);
+    if (eatenFood % 17 === 0 && bonusAmount === 0) drawBonus(`morePointsBonus`);
+    if (eatenFood % 10 === 0 && bonusAmount === 0) drawBonus(`shortenBonus`);
+    if (eatenFood % 15 === 0 && bonusAmount === 0) drawBonus(`enlargeBonus`);
     drawFood();
     advanceSnake();
     drawSnake();
@@ -78,7 +80,7 @@ function drawBonus(type) {
   ctx.fillRect(properties.x, properties.y, 10, 10);
 
   bonusAmount = 1;
-  
+  console.log(properties.type);
 }
 
 function advanceSnake() {
@@ -103,7 +105,7 @@ function advanceSnake() {
     head.y = 0;
   }
   const level = levelDropdown.options[levelDropdown.selectedIndex].value;
-  switch(level) {
+  switch (level) {
     case "gridLevel1":
       standardScore;
       break;
@@ -127,54 +129,97 @@ function advanceSnake() {
     score += standardScore;
     document.querySelector("#score").innerHTML = ` Current score: ${score}`;
     createFood();
-    eatenFood ++;
+    eatenFood++;
   } else {
     snake.pop();
   }
 
   const didEatBonus = snake[0].x === properties.x && snake[0].y === properties.y;
   if (didEatBonus) {
-    console.log(typeof properties.type);
-    switch(type) {
-      case slowBonus:
-        gameSpeed = gameSpeed * 2;
-        setTimeout(function() {gameSpeed = 100}, respawnTime);
-        bonusAmount = 0;
-        drawBonus(`slowBonus`);
-        // break;
-      case fastBonus:
-        console.log("being fast");
-        gameSpeed = gameSpeed / 2;
-        setTimeout(function() {gameSpeed = 100}, respawnTime)
-        bonusAmount = 0;
-        drawBonus(`fastBonus`);
-        bonusAmount = 0;
-        break;
-      case morePointsBonus:
-        console.log("score multiplier");
-        score * multiplier;
-        bonusAmount = 0;
-        drawBonus(`morePointsBonus`);
-        break;
-      case shortenBonus:
-        if (multiplier > 1) {
-            for (let i = 0; i <= multiplier; i++) {
-              snake.pop();
-            }
-          }
-        shortenBonusAmount = 0;
-        drawBonus(`morePointsBonus`);
-        break;
-      case enlargeBonus:
-        if (multiplier > 1) {
-          for (let i = 0; i <= multiplier; i++) {
-            snake.unshift(head);
-          }
-        }
-        enlargeBonusAmount = 0;
-        drawBonus(`morePointsBonus`);
-        break;
+console.log(properties.type);
+    if (properties.type === "slowBonus") {
+      gameSpeed = gameSpeed * 2;
+      setTimeout(function () { gameSpeed = 100 }, respawnTime);
+      bonusAmount = 0;
+      drawBonus(`slowBonus`);
     }
+
+    else if (properties.type === "fastBonus") {
+      console.log(properties.type, "being fast");
+      gameSpeed = gameSpeed / 2;
+      setTimeout(function () { gameSpeed = 100 }, respawnTime)
+      bonusAmount = 0;
+      drawBonus(`fastBonus`);
+    }
+
+    // else if (properties.type === morePointsBonus) {
+    //   console.log("score multiplier");
+    //   score * multiplier;
+    //   bonusAmount = 0;
+    //   drawBonus(`morePointsBonus`);
+    // }
+
+    // else if (properties.type === shortenBonus) {
+    //   console.log("short")
+    //   if (multiplier > 1) {
+    //     for (let i = 0; i <= multiplier; i++) {
+    //       snake.pop();
+    //     }
+    //   }
+    //   bonusAmount = 0;
+    //   drawBonus(`shortenBonus`);
+    // }
+
+    // else if (properties.type === enlargeBonus) {
+    //   console.log("enlarge")
+    //   if (multiplier > 1) {
+    //     for (let i = 0; i <= multiplier; i++) {
+    //       snake.unshift(head);
+    //     }
+    //   }
+    //   enlargeBonusAmount = 0;
+    //   drawBonus(`morePointsBonus`);
+    // }
+
+    // switch(type) {
+    //   case slowBonus:
+    //     gameSpeed = gameSpeed * 2;
+    //     setTimeout(function() {gameSpeed = 100}, respawnTime);
+    //     bonusAmount = 0;
+    //     drawBonus(`slowBonus`);
+    //     break;
+    //   case fastBonus:
+    //     console.log("being fast");
+    //     gameSpeed = gameSpeed / 2;
+    //     setTimeout(function() {gameSpeed = 100}, respawnTime)
+    //     bonusAmount = 0;
+    //     drawBonus(`fastBonus`);
+    //     break;
+    //   case morePointsBonus:
+    //     console.log("score multiplier");
+    //     score * multiplier;
+    //     bonusAmount = 0;
+    //     drawBonus(`morePointsBonus`);
+    //     break;
+    //   case shortenBonus:
+    //     if (multiplier > 1) {
+    //         for (let i = 0; i <= multiplier; i++) {
+    //           snake.pop();
+    //         }
+    //       }
+    //     shortenBonusAmount = 0;
+    //     drawBonus(`morePointsBonus`);
+    //     break;
+    //   case enlargeBonus:
+    //     if (multiplier > 1) {
+    //       for (let i = 0; i <= multiplier; i++) {
+    //         snake.unshift(head);
+    //       }
+    //     }
+    //     enlargeBonusAmount = 0;
+    //     drawBonus(`morePointsBonus`);
+    //     break;
+    // }
   }
 }
 
@@ -189,7 +234,7 @@ function verifyScore() {
   localStorage.setItem("highestFive", highestFive);
   localScores = localStorage.getItem("highestFive").split(",");
   highestScoresList.innerHTML = "Highest score: " + localStorage.highest;
-  for (let i = 0; i < 5 ; i++) {
+  for (let i = 0; i < 5; i++) {
     highestList.innerHTML = `<li class="score__item"> ${"undefined" == typeof localScores[i] ? "" : localScores[i]}</li>`
   }
 }
@@ -261,7 +306,7 @@ function createMaze(selected) {
     for (let x = 0; x < selected[y].length; x++) {
       if (selected[y][x] === 1) {
         ctx.fillStyle = "black";
-        ctx.fillRect(x*10, y*10, 10, 10);
+        ctx.fillRect(x * 10, y * 10, 10, 10);
       }
     }
   }

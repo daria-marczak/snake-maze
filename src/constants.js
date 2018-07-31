@@ -41,7 +41,7 @@ let highestScore;
 let changingDirection = false;
 let foodX;
 let foodY;
-let eatenFood = 0;
+let eatenFood = 1;
 let slowBonusX;
 let slowBonusY;
 let fastBonusX;

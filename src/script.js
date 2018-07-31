@@ -8,6 +8,9 @@ let fastBonus;
 let morePointsBonus;
 let shortenBonus;
 let enlargeBonus;
+let canOmitWallsBonus;
+
+let isOmittingWallsPossible = false;
 
 let bonusAmount = 0;
 

@@ -16,27 +16,27 @@
       <ul>
         <li>
           <div class="square yellow"></div>
-          Slows down for 5 seconds
+          Slows down for set number of seconds (default is 5 seconds)
         </li>
         <li>
           <div class="square green"></div>
-          Boosts up the speed for 5 seconds
+          Speeds up for set number of seconds (default is 5 seconds)
         </li>
         <li>
           <div class="square blue"></div>
-          Adds 50 points to your score
+          Adds set amount of points to the score (default is 50 points)
         </li>
         <li>
           <div class="square violet"></div>
-          Removes one part of the snake
+          Removes set number of parts from the snake (default is one)
         </li>
         <li>
           <div class="square grey"></div>
-          Adds selected number of parts to the snake
+          Adds set number of parts to the snake (default is one)
         </li>
         <li>
           <div class="square pink"></div>
-          Snake can omit walls during selected amount of seconds
+          Snake can go through walls for set number of seconds (default is 5 seconds)
         </li>
       </ul>
     </div>
@@ -51,7 +51,7 @@
     <div class="frame__selection">
       <h2>Selection pane</h2>
       <div class="level">
-        <p>Select level</p>
+        <p>Set level</p>
         <form id="levelSelect">
           <select id="levels">
             <option value="gridLevel1">One</option>
@@ -64,21 +64,21 @@
         </form>
       </div>
       <div class="time">
-        <p>Select time of powerup appearance (miliseconds)</p>
+        <p>Set time of powerup appearance (miliseconds)</p>
         <form id="timeSelect">
           <input id="number" type="number" value="5000" min="1000" max="100000">
           <input type="submit" class="submit" value="Select">
         </form>
       </div>
       <div class="multiplier">
-          <p>Select points multiplier</p>
+          <p>Set amount of points multiplier</p>
           <form id="multiplierSelect">
             <input id="multiplier" type="number" value="1" min="1" max="10">
             <input type="submit" class="submit" value="Select">
           </form>
         </div>
         <div class="gameSpeed">
-            <p>Select game speed</p>
+            <p>Set game speed</p>
             <form id="gameSpeedSelect">
               <input id="gameSpeed" type="number" value="100" min="10" max="10000">
               <input type="submit" class="submit" value="Select">

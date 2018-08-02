@@ -36,7 +36,7 @@ const width = canvas.width;
 const height = canvas.height;
 
 let standardScore = 10;
-let bonusScore = 30;
+let bonusScore = 50;
 let score = 0;
 let highestScore;
 let changingDirection = false;

@@ -199,7 +199,9 @@ function verifyScore() {
   highestFive = scores.sort((a, b) => b - a).slice(0, 5).toString(", ");
   localStorage.setItem("highestFive", highestFive);
   localScores = localStorage.getItem("highestFive").split(",");
-  highestScoresList.innerHTML = "Highest score: " + localStorage.highest;
+  if (localStorage.highest) {
+    highestScoresList.innerHTML = "Highest score: " + localStorage.highest;
+  }
   for (let i = 0; i < 5; i++) {
     highestList.innerHTML = `<li class="score__item"> ${"undefined" == typeof localScores[i] ? "" : localScores[i]}</li>`
   }

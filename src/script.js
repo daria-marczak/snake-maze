@@ -20,6 +20,7 @@ function main() {
     if (eatenFood % 15 === 0 && bonusAmount === 0) drawBonus(`enlargeBonus`);
     if (eatenFood % 22 === 0 && bonusAmount === 0) drawBonus(`canOmitWallsBonus`)
     drawFood();
+    checkIfBonusIsOnWall();
     advanceSnake();
     drawSnake();
 
@@ -67,6 +68,24 @@ function drawBonus(type) {
   ctx.fillRect(properties.x, properties.y, 10, 10);
 
   bonusAmount = 1;
+
+}
+
+function checkIfBonusIsOnWall() {
+  if (!levels[selected]) {
+    levels[selected] = selected;
+  }
+  for (let y = 0; y < selected.length; y++) {
+    for (let x = 0; x < selected[y].length; x++) {
+      if (properties. x === x && properties.y === y) {
+        drawBonus(properties[type]);
+      }
+
+      if (foodX === x && foodY === y) {
+        createFood();
+      }
+    }
+  }
 }
 
 function advanceSnake() {
@@ -90,7 +109,6 @@ function advanceSnake() {
   if (head.y > 360) {
     head.y = 0;
   }
-  const level = levelDropdown.options[levelDropdown.selectedIndex].value;
   switch (level) {
     case "gridLevel1":
       standardScore;
@@ -164,7 +182,6 @@ function advanceSnake() {
 
     else if (properties.type === "canOmitWallsBonus") {
       isOmittingWallsPossible = true;
-      console.log("I can omit walls");
       setTimeout(function() {
         isOmittingWallsPossible = false;
       }, respawnTime);
@@ -256,6 +273,7 @@ function createMaze(selected) {
       if (selected[y][x] === 1) {
         ctx.fillStyle = "black";
         ctx.fillRect(x * 10, y * 10, 10, 10);
+        // console.log(x, y);
       }
     }
   }

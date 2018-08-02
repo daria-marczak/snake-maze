@@ -87,3 +87,5 @@ let bonusAmount = 0;
 
 let fastBonusAmount = 0;
 let morePointsBonusAmount = 0;
+
+const level = levelDropdown.options[levelDropdown.selectedIndex].value;

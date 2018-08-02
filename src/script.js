@@ -18,9 +18,10 @@ function main() {
     if (eatenFood % 17 === 0 && bonusAmount === 0) drawBonus(`morePointsBonus`);
     if (eatenFood % 10 === 0 && bonusAmount === 0) drawBonus(`shortenBonus`);
     if (eatenFood % 15 === 0 && bonusAmount === 0) drawBonus(`enlargeBonus`);
-    if (eatenFood % 22 === 0 && bonusAmount === 0) drawBonus(`canOmitWallsBonus`)
-    drawFood();
+    if (eatenFood % 22 === 0 && bonusAmount === 0) drawBonus(`canOmitWallsBonus`);
     checkIfBonusIsOnWall();
+
+    drawFood();
     advanceSnake();
     drawSnake();
 
@@ -314,7 +315,6 @@ function didGameEnd() {
       for (let y = 0; y < levels[selected].length; y++) {
         for (let x = 0; x < levels[selected][y].length; x++) {
           if (levels[selected][y][x] === 1) {
-            // Check collision with maze wall
             if (x * 10 === snake[0].x && y * 10 === snake[0].y) {
               didCollideWithMazeWall = true;
             }

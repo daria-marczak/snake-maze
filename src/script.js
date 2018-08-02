@@ -14,7 +14,7 @@ function main() {
     changingDirection = false;
     clearCanvas();
     if (eatenFood % 7 === 0 && bonusAmount === 0) drawBonus(`slowBonus`);
-    if (eatenFood % 9 === 0 && bonusAmount === 0) drawBonus(`fastBonus`);
+    if (eatenFood % 9 === 0 && bonusAmount === 1) drawBonus(`fastBonus`);
     if (eatenFood % 17 === 0 && bonusAmount === 0) drawBonus(`morePointsBonus`);
     if (eatenFood % 10 === 0 && bonusAmount === 0) drawBonus(`shortenBonus`);
     if (eatenFood % 15 === 0 && bonusAmount === 0) drawBonus(`enlargeBonus`);
@@ -149,7 +149,7 @@ function advanceSnake() {
     else if (properties.type === "fastBonus") {
       gameSpeed = gameSpeed / 2;
       setTimeout(function () { gameSpeed = 100 }, respawnTime)
-      bonusAmount = 0;
+      bonusAmount = 2;
     }
 
     else if (properties.type === "morePointsBonus") {
@@ -275,7 +275,6 @@ function createMaze(selected) {
       if (selected[y][x] === 1) {
         ctx.fillStyle = "black";
         ctx.fillRect(x * 10, y * 10, 10, 10);
-        // console.log(x, y);
       }
     }
   }

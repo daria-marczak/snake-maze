@@ -43,16 +43,6 @@ let changingDirection = false;
 let foodX;
 let foodY;
 let eatenFood = 1;
-let slowBonusX;
-let slowBonusY;
-let fastBonusX;
-let fastBonusY;
-let morePointsBonusX;
-let morePointsBonusY;
-let shortenBonusX;
-let shortenBonusY;
-let enlargeBonusX;
-let enlargeBonusY;
 let dx = 10;
 let dy = 0;
 
@@ -84,8 +74,5 @@ let canOmitWallsBonus;
 let isOmittingWallsPossible = false;
 
 let bonusAmount = 0;
-
-let fastBonusAmount = 0;
-let morePointsBonusAmount = 0;
 
 const level = levelDropdown.options[levelDropdown.selectedIndex].value;
